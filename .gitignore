@@ -1,0 +1,12 @@
+.DS_Store
+.envrc
+env.js
+app/dist/*
+builds/*
+node_modules/
+npm-debug.log
+npm-debug.log.*
+thumbs.db
+.nuxt
+site/dist
+!.keep

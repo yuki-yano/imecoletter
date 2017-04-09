@@ -1,0 +1,33 @@
+[ignore]
+.*/node_modules/.*
+.*/tasks/.*
+.*/app/dist/.*
+.*/app/src/renderer/vuex/modules/index.js
+
+[include]
+
+[libs]
+
+[options]
+module.file_ext=.js
+module.file_ext=.vue
+
+module.name_mapper.extension='css' -> '<PROJECT_ROOT>/app/src/renderer/types/cssStub.js'
+
+module.name_mapper='^actions\/\(.*\)$' -> '<PROJECT_ROOT>/app/src/renderer/actions/\1'
+module.name_mapper='^actions$' -> '<PROJECT_ROOT>/app/actions'
+
+module.name_mapper='^components\/\(.*\)$' -> '<PROJECT_ROOT>/app/src/renderer/components/\1'
+module.name_mapper='^components$' -> '<PROJECT_ROOT>/app/components'
+
+module.name_mapper='^constants\/\(.*\)$' -> '<PROJECT_ROOT>/app/src/renderer/constants/\1'
+module.name_mapper='^constants$' -> '<PROJECT_ROOT>/app/constants'
+
+module.name_mapper='^services\/\(.*\)$' -> '<PROJECT_ROOT>/app/src/renderer/services/\1'
+module.name_mapper='^services$' -> '<PROJECT_ROOT>/app/services'
+
+module.name_mapper='^types\/\(.*\)$' -> '<PROJECT_ROOT>/app/src/renderer/types/\1'
+module.name_mapper='^types$' -> '<PROJECT_ROOT>/app/types'
+
+module.name_mapper='^vuex\/\(.*\)$' -> '<PROJECT_ROOT>/app/src/renderer/vuex/\1'
+module.name_mapper='^vuex$' -> '<PROJECT_ROOT>/app/vuex'
