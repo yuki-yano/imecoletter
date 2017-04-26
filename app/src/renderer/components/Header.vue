@@ -12,9 +12,9 @@
       <i class="fa fa-sign-out"></i>
     </button>
     <div class="reload" v-if="isLoading || $store.state.tweets.loading">
-      <div class="reload-contents">
-        <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
-        <p>読み込み中･･･</p>
+      <div class="reload-contents text-center">
+        <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw text-center"></i>
+        <p class="text-center">読み込み中･･･</p>
       </div>
     </div>
   </div>
@@ -126,13 +126,9 @@ i:hover {
 
 .reload-contents {
   position: absolute;
-  left: 0px;
-  right: 0px;
-  top: 0px;
-  bottom: 0px;
-  margin: auto;
-  max-width: 320px;
-  height: 0;
+  top: 40%;
+  left: 30%;
+  right: 30%;
   color: #fff;
   font-size: 1.2rem;
 }
