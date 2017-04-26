@@ -3,6 +3,7 @@
 .*/tasks/.*
 .*/app/dist/.*
 .*/app/src/renderer/vuex/modules/index.js
+.*/app/src/main/.*
 
 [include]
 

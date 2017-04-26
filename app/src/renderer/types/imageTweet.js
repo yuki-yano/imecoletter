@@ -1,27 +1,27 @@
 /* @flow */
 import type { User } from 'types/user'
 
-export type ImageUrl = {
+export type ImageUrl = {|
   base: string,
   small: string,
   medium: string,
   large: string,
   original: string
-};
+|};
 
-export type Label = {
+export type Label = {|
   name: string,
   score: number,
   rand: number
-}
+|}
 
-export type Image = {
+export type Image = {|
   url: ImageUrl,
   labels: Array<Label>,
   rand: number
-}
+|}
 
-export type ImageTweet = {
+export type ImageTweet = {|
   id: string,
   user: User,
   text: string,
@@ -33,4 +33,4 @@ export type ImageTweet = {
   fav: number,
   faved: boolean,
   rand: number
-}
+|}

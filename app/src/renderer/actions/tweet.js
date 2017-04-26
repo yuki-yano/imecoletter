@@ -57,7 +57,7 @@ async function getUserDataFromTweetID (tweetID: string): Promise<Object> {
   return tweet.data.user
 }
 
-async function getImageTweetFromID (id: string): Promise<ImageTweet | {}> {
+async function getImageTweetFromID (id: string): Promise<ImageTweet | any> {
   const client = createClient()
 
   try {
@@ -171,7 +171,7 @@ async function imageToLabel (url: string): Promise<Array<Label>> {
 export default {
   [ACTION.SET_IMAGE_TWEETS]: async function ({ commit }: { commit: Function }) {
     const imageTweetIds: Array<string> = await getImageTweetId()
-    const imageTweetsPromise: Array<Promise<Object>> = imageTweetIds.map((id: string) => getImageTweetFromID(id))
+    const imageTweetsPromise: Array<Promise<ImageTweet>> = imageTweetIds.map((id: string) => getImageTweetFromID(id)).filter(tweet => tweet === {})
 
     let imageTweets: Array<ImageTweet> = await Promise.all(imageTweetsPromise)
     imageTweets = _.unionWith(imageTweets, store.state.tweets.imageTweets, (a, b) => a.id === b.id)
