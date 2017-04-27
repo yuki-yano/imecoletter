@@ -55,7 +55,7 @@ import * as ROUTE from 'constants/route'
 
 export default {
   name: 'setting-menu',
-  data() {
+  data () {
     return {
       autoReload: 90,
       autoReloadList: [90, 180, 300, 420, 600],

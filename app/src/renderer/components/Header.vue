@@ -36,7 +36,7 @@ export default {
   components: {
     SettingMenu
   },
-  data() {
+  data () {
     return {
       stickyConfig: {
         zIndex: 100,
@@ -60,14 +60,14 @@ export default {
     async reload () {
       this.$store.dispatch(ACTION.SET_IMAGE_TWEETS)
       this.$store.dispatch(ACTION.START_LOAD_IMAGE_TWEETS)
-    },
+    }
   },
   watch: {
     autoReload: function setAutoReload () {
       clearInterval(this.autoReloadTimer)
       this.autoReloadTimer = setInterval(() => {
         this.reload()
-      }, this.autoReload);
+      }, this.autoReload)
     }
   },
   directives: {
@@ -77,7 +77,7 @@ export default {
     this.reload()
     this.autoReloadTimer = setInterval(() => {
       this.reload()
-    }, this.autoReload);
+    }, this.autoReload)
   }
 }
 </script>
