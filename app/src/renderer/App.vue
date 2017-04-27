@@ -17,14 +17,31 @@ import appEnv from '../../../env'
 
 async function isLogin (accessToken: ?string, accessSecret: ?string): Promise<boolean> {
   const config = new Config()
-  if (!accessToken || !accessSecret) {
+  if (!accessToken && !accessSecret) {
     config.set('is_login', false)
     return false
   }
-  console.log(accessToken)
-  console.log(accessSecret)
 
-  return false
+  const client: Twit = new Twitter({
+    consumer_key: appEnv.TWITTER_KEY,
+    consumer_secret: appEnv.TWITTER_SECRET,
+    access_token: accessToken,
+    access_token_secret: accessSecret
+  })
+  try {
+    const result = await client.get('account/verify_credentials', { skip_status: true })
+    if ('errors' in result.data) {
+      config.set('is_login', false)
+      return false
+    } else {
+      const config = new Config()
+      config.set('is_login', true)
+      return true
+    }
+  } catch (e) {
+    config.set('is_login', false)
+    return false
+  }
 }
 
 export default {
