@@ -1,7 +1,7 @@
 /* @flow */
-export type User = {
+export type User = {|
   id: number,
   name: string,
   screen_name: string,
   iconUrl: string
-}
+|}
