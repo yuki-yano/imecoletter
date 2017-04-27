@@ -40,15 +40,20 @@ function baseUrlToImageUrl (url: string): ImageUrl {
 
 async function getImageTweetId (): Promise<Array<string>> {
   const client = createClient()
-  const tweets = await client.get('statuses/home_timeline', { count: 200 })
 
-  // 複数枚画像ツイート
-  const imageTweets = tweets.data.filter((t) => { return 'extended_entities' in t })
-                                 .filter((t) => { return 'media' in t.extended_entities })
-                                 .filter((t) => { return t.user.protected === false })
-                                 .filter((t) => { return t.extended_entities.media[0].expanded_url.match(/photo/) })
+  try {
+    let tweets = await client.get('statuses/home_timeline', { count: 200 })
 
-  return imageTweets.map((t) => { return t.id_str })
+    // 複数枚画像ツイート
+    tweets = tweets.data.filter((t) => { return 'extended_entities' in t })
+                        .filter((t) => { return 'media' in t.extended_entities })
+                        .filter((t) => { return t.user.protected === false })
+                        .filter((t) => { return t.extended_entities.media[0].expanded_url.match(/photo/) })
+
+    return tweets.map((t) => { return t.id_str })
+  } catch (e) {
+    return []
+  }
 }
 
 async function getUserDataFromTweetID (tweetID: string): Promise<Object> {
@@ -198,9 +203,14 @@ export default {
       const images: Array<Image> = tweet.images.filter((image) => image.labels !== [])
       return images !== []
     })
-    imageTweets = _.take(imageTweets, 1000)
+    imageTweets = _.take(imageTweets, store.state.settings.imageCount)
 
     commit(MUTATION.SET_IMAGE_TWEETS, { imageTweets })
+
+    commit(MUTATION.START_DISPLAY_REFRESH)
+    setTimeout(() => {
+      commit(MUTATION.END_DISPLAY_REFRESH)
+    }, 2500)
   },
   [ACTION.START_LOAD_IMAGE_TWEETS]: async function ({ commit }: { commit: Function }) {
     commit(MUTATION.START_LOAD_IMAGE_TWEETS)

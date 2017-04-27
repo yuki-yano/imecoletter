@@ -15,7 +15,8 @@ if (imageTweets === undefined) {
 
 const state: TweetsState = {
   imageTweets: imageTweets,
-  loading: false
+  loading: false,
+  refreshing: true
 }
 
 const mutations = {
@@ -26,6 +27,12 @@ const mutations = {
   },
   [MUTATION.START_LOAD_IMAGE_TWEETS] (state: TweetsState) {
     state.loading = true
+  },
+  [MUTATION.START_DISPLAY_REFRESH] (state: TweetsState) {
+    state.refreshing = true
+  },
+  [MUTATION.END_DISPLAY_REFRESH] (state: TweetsState) {
+    state.refreshing = false
   },
   [MUTATION.RETWEET] (state: TweetsState, id: string) {
     state.imageTweets.forEach((tweet) => {

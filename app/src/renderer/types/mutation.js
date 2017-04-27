@@ -9,7 +9,8 @@ export type AuthState = {
 
 export type TweetsState = {
   imageTweets: Array<ImageTweet>,
-  loading: boolean
+  loading: boolean,
+  refreshing: boolean
 }
 
 export type SearchState = {
@@ -18,4 +19,9 @@ export type SearchState = {
 
 export type ModalState = {
   image: ?Image
+}
+
+export type SettingsState = {
+  autoReload: number,
+  imageCount: number
 }

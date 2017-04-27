@@ -1,70 +1,73 @@
 <template>
-  <div v-sticky="stickyConfig" id="header" class="header d-flex justify-content-between">
-    <button @click="reload" data-toggle="modal" data-target="#reload">
-      <i class="fa fa-refresh"></i>
-    </button>
-    <h2>
-      <a href="#">
-        <img src="./Login/assets/logo.png">
-      </a>
-    </h2>
-    <button @click="logout">
-      <i class="fa fa-sign-out"></i>
-    </button>
-    <div class="reload" v-if="isLoading || $store.state.tweets.loading">
-      <div class="reload-contents text-center">
-        <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw text-center"></i>
-        <p class="text-center">読み込み中･･･</p>
+  <div v-sticky="stickyConfig" id="header">
+    <div class="header d-flex justify-content-between">
+      <button type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+        <i class="fa fa-cog" aria-hidden="true"></i>
+      </button>
+      <h2>
+        <a href="#">
+          <img src="./Login/assets/logo.png">
+        </a>
+      </h2>
+      <button @click="reload" :disabled="loading" data-toggle="modal" data-target="#reload">
+        <i class="fa fa-refresh"></i>
+      </button>
+      <div class="reload" v-if="refreshing">
+        <div class="reload-contents text-center">
+          <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw text-center"></i>
+          <p class="text-center">画面更新中</p>
+        </div>
       </div>
     </div>
+    <setting-menu></setting-menu>
   </div>
 </template>
 
 <script>
 /* @flow */
-import electron from 'electron'
-import Config from 'electron-config'
-import Router from 'vue-router'
 import VueSticky from 'vue-sticky'
 
 import * as ACTION from 'vuex/action-types'
-import * as ROUTE from 'constants/route'
+
+import SettingMenu from './SettingMenu'
 
 export default {
   name: 'header-view',
-  data: function () {
+  components: {
+    SettingMenu
+  },
+  data() {
     return {
-      isLoading: false,
       stickyConfig: {
         zIndex: 100,
         stickyTop: 0
-      }
+      },
+      autoReloadTimer: null
     }
   },
   computed: {
-    loadingSpin () {
-      return {
-        'fa-spin': this.isLoading || this.$store.state.tweets.loading
-      }
+    loading () {
+      return this.$store.state.tweets.loading
+    },
+    refreshing () {
+      return this.$store.state.tweets.refreshing
+    },
+    autoReload () {
+      return this.$store.state.settings.autoReload * 1000
     }
   },
   methods: {
     async reload () {
       this.$store.dispatch(ACTION.SET_IMAGE_TWEETS)
       this.$store.dispatch(ACTION.START_LOAD_IMAGE_TWEETS)
-      this.isLoading = true
-      this.isLoading = false
     },
-    logout () {
-      const router = new Router()
-      this.$store.dispatch(ACTION.LOGOUT)
-
-      const remote = electron.remote
-      const config = new Config()
-      remote.getCurrentWebContents().session.clearStorageData({ storages: ['cookies'] }, () => {})
-      config.delete('twitter_access_token')
-      config.delete('twitter_access_secret')
-      router.push(ROUTE.LOGIN)
+  },
+  watch: {
+    autoReload: function setAutoReload () {
+      clearInterval(this.autoReloadTimer)
+      this.autoReloadTimer = setInterval(() => {
+        this.reload()
+      }, this.autoReload);
     }
   },
   directives: {
@@ -72,9 +75,9 @@ export default {
   },
   mounted () {
     this.reload()
-    setInterval(() => {
+    this.autoReloadTimer = setInterval(() => {
       this.reload()
-    }, 90000)
+    }, this.autoReload);
   }
 }
 </script>
