@@ -25,7 +25,6 @@ import ImgModal from './ImgModal'
 
 export default {
   name: 'home-page',
-
   components: {
     HeaderView,
     TweetTagsHeader,

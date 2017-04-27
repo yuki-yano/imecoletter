@@ -115,7 +115,6 @@ async function getImageTweetFromID (id: string): Promise<ImageTweet | any> {
         faved: tweet.data.favorited,
         rand: Math.random()
       }
-
       return imageTweet
     } else {
       fav = tweet.data.favorite_count
@@ -178,7 +177,7 @@ async function imageToLabel (url: string): Promise<Array<Label>> {
 export default {
   [ACTION.SET_IMAGE_TWEETS]: async function ({ commit }: { commit: Function }) {
     const imageTweetIds: Array<string> = await getImageTweetId()
-    const imageTweetsPromise: Array<Promise<ImageTweet>> = imageTweetIds.map((id: string) => getImageTweetFromID(id)).filter(tweet => tweet === {})
+    const imageTweetsPromise: Array<Promise<ImageTweet>> = imageTweetIds.map((id: string) => getImageTweetFromID(id))
 
     let imageTweets: Array<ImageTweet> = await Promise.all(imageTweetsPromise)
     imageTweets = _.unionWith(imageTweets, store.state.tweets.imageTweets, (a, b) => a.id === b.id)
