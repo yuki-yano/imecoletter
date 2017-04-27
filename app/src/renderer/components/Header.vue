@@ -58,8 +58,10 @@ export default {
   },
   methods: {
     async reload () {
-      this.$store.dispatch(ACTION.SET_IMAGE_TWEETS)
-      this.$store.dispatch(ACTION.START_LOAD_IMAGE_TWEETS)
+      if (this.$store.state.auth.login) {
+        this.$store.dispatch(ACTION.SET_IMAGE_TWEETS)
+        this.$store.dispatch(ACTION.START_LOAD_IMAGE_TWEETS)
+      }
     }
   },
   watch: {

@@ -8,12 +8,24 @@
 /* @flow */
 import Router from 'vue-router'
 import Config from 'electron-config'
+import Twitter from 'twit'
 
 import store from 'vuex/store'
 import * as ACTION from 'vuex/action-types'
 import * as ROUTE from 'constants/route'
+import appEnv from '../../../env'
 
-const router = new Router()
+async function isLogin (accessToken: ?string, accessSecret: ?string): Promise<boolean> {
+  const config = new Config()
+  if (!accessToken || !accessSecret) {
+    config.set('is_login', false)
+    return false
+  }
+  console.log(accessToken)
+  console.log(accessSecret)
+
+  return false
+}
 
 export default {
   store,
@@ -22,7 +34,8 @@ export default {
     const accessToken: ?string = config.get('twitter_access_token')
     const accessSecret: ?string = config.get('twitter_access_secret')
 
-    if (accessToken !== undefined && accessSecret !== undefined) {
+    const router = new Router()
+    if (await isLogin(accessToken, accessSecret)) {
       router.push(ROUTE.HOME)
       this.$store.dispatch(ACTION.LOGIN, {
         accessToken: accessToken,
@@ -50,7 +63,6 @@ body,
   box-sizing: content-box;
   margin: 0;
   padding: 0;
-  text-align: left;
 }
 
 ul {
@@ -88,5 +100,4 @@ h6 {
 p {
   margin: 0;
 }
-
 </style>
