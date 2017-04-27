@@ -7,6 +7,7 @@ export const LOGOUT = 'LOGOUT_TWITTER'
 // Loading
 export const START_LOAD_IMAGE_TWEETS = 'START_LOAD_IMAGE_TWEETS'
 export const SET_IMAGE_TWEETS = 'SET_IMAGE_TWEETS'
+export const END_DISPLAY_REFRESH = 'END_DISPLAY_REFRESH'
 
 // RT & Fav
 export const RETWEET = 'RETWEET'

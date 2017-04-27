@@ -216,6 +216,9 @@ export default {
   [ACTION.START_LOAD_IMAGE_TWEETS]: async function ({ commit }: { commit: Function }) {
     commit(MUTATION.START_LOAD_IMAGE_TWEETS)
   },
+  [ACTION.END_DISPLAY_REFRESH]: async function ({ commit }: { commit: Function }) {
+    commit(MUTATION.END_DISPLAY_REFRESH)
+  },
   [ACTION.RETWEET]: async function ({ commit }: Function, { id }: { id: string }) {
     const client: Twit = createClient()
     await client.post('statuses/retweet/:id', { id })

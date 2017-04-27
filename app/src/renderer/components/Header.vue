@@ -61,6 +61,10 @@ export default {
       if (this.$store.state.auth.login) {
         this.$store.dispatch(ACTION.SET_IMAGE_TWEETS)
         this.$store.dispatch(ACTION.START_LOAD_IMAGE_TWEETS)
+      } else {
+        setTimeout(() => {
+          this.$store.dispatch(ACTION.END_DISPLAY_REFRESH)
+        }, 2500)
       }
     }
   },
