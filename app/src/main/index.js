@@ -8,6 +8,13 @@ import type Twit from 'twit'
 
 import appEnv from '../../../env'
 
+// Install `electron-debug` with `devtron`
+if (process.env.NODE_ENV === 'development') {
+  require('electron-debug')({ showDevTools: true })
+} else {
+  require('electron-debug')()
+}
+
 let mainWindow: ?BrowserWindow
 const mainUrl: string = process.env.NODE_ENV === 'development'
   ? `http://localhost:${require('../../../config').port}`
@@ -49,6 +56,7 @@ async function isLogin (accessToken: ?string, accessSecret: ?string): Promise<bo
 }
 
 async function createWindow () {
+  // main
   mainWindow = new BrowserWindow({
     height: 800,
     width: 1280,
@@ -83,8 +91,16 @@ async function createWindow () {
         loginWindow.close()
       })
       loginWindow.loadURL(loginUrl)
+  // debug
+  const installExtension = require('electron-devtools-installer')
+  installExtension.default(installExtension.VUEJS_DEVTOOLS)
+    .then(() => {})
+    .catch((err) => {
+      console.log('Unable to install `vue-devtools`: \n', err)
     })
-  }
+
+  const menu = Menu.buildFromTemplate([ { submenu: [ { label: 'Quit', accelerator: 'Command+Q', click: function () { app.quit() } } ] }, { label: 'Tools', submenu: [ { label: 'Open DevTools', click () { mainWindow.openDevTools() } } ] } ])
+  Menu.setApplicationMenu(menu)
 }
 
 app.on('ready', createWindow)

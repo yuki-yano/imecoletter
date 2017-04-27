@@ -9,6 +9,8 @@
     "babel-runtime": "^6.23.0",
     "bootstrap": "4.0.0-alpha.6",
     "electron-config": "^0.2.1",
+    "electron-debug": "^1.1.0",
+    "electron-devtools-installer": "^2.2.0",
     "flow-bin": "^0.44.2",
     "font-awesome": "^4.7.0",
     "jquery": "^3.2.1",
