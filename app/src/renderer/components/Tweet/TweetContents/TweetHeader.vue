@@ -47,7 +47,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 h2 {
   font-size: 0.9rem;
   font-weight: 700;
@@ -80,20 +80,20 @@ button {
   color: #e0e0e0;
   border-radius: 4px;
   font-size: 1rem;
-}
 
-button:hover {
-  transition-duration: 0.7s;
-  color: #b9b9b9;
-}
+  &:hover {
+    transition-duration: 0.7s;
+    color: #b9b9b9;
+  }
 
-button:checked {
-  transition-duration: 0.7s;
-  color: #fff;
-}
+  &:checked {
+    transition-duration: 0.7s;
+    color: #fff;
+  }
 
-button:disabled {
-  color: #fff;
+  &:disabled {
+    color: #fff;
+  }
 }
 
 img {
@@ -106,15 +106,15 @@ img {
 
 a {
   text-decoration: none;
-}
 
-a:hover {
-  text-decoration: underline;
-}
+  &:hover {
+    text-decoration: underline;
+  }
 
-a img:hover {
-  transition-duration: 0.3s;
-  opacity: 0.7;
+  img:hover {
+    transition-duration: 0.3s;
+    opacity: 0.7;
+  }
 }
 
 .c-card-header {
@@ -125,10 +125,12 @@ a img:hover {
   margin-left: auto;
   margin-right: 0.4px;
 }
+
 .following {
-  color: #006ADB;
+  color: #006adb;
 }
+
 .unfollow {
-  color: #E0E8EE;
+  color: #e0e8ee;
 }
 </style>

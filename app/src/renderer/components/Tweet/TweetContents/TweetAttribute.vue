@@ -66,32 +66,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.card-tags {
-  display: flex;
-  align-items: flex-start;
-  color: #ff80b0;
-
-  span {
-    color: #1b2022;
-    font-size: 1.6rem;
-  }
-}
-
-.tag-list {
-  width: 100%;
-
-  div {
-    width: 100%;
-    padding-bottom: 0.25rem;
-  }
-
-  div + div {
-    border-top: 1px solid #ddd;
-    padding-top: 0.25rem;
-    padding-bottom: 0.25rem;
-  }
-}
-
 i {
   margin-top: 0.2rem;
   margin-right: 6px;
@@ -132,6 +106,32 @@ button {
   &:hover {
     transition-duration: 0.7s;
     background-color: #e0e8ee;
+  }
+}
+
+.card-tags {
+  display: flex;
+  align-items: flex-start;
+  color: #ff80b0;
+
+  span {
+    color: #1b2022;
+    font-size: 1.6rem;
+  }
+}
+
+.tag-list {
+  width: 100%;
+
+  div {
+    width: 100%;
+    padding-bottom: 0.25rem;
+  }
+
+  div + div {
+    border-top: 1px solid #ddd;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
   }
 }
 </style>

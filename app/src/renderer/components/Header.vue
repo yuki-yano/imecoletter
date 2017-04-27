@@ -10,7 +10,7 @@
         </a>
       </h2>
       <button @click="reload" :disabled="loading" data-toggle="modal" data-target="#reload">
-        <i class="fa fa-refresh"></i>
+        <i class="fa fa-refresh" :class="{'fa-spin' : $store.state.tweets.loading}"></i>
       </button>
       <div class="reload" v-if="refreshing">
         <div class="reload-contents text-center">
@@ -82,19 +82,23 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 h2 {
   font-size: 1.2rem;
+
+  img {
+    width: 142px;
+    height: auto;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
 }
 
 i {
   line-height: 28px;
   font-size: 1.2rem;
-}
-
-h2 img {
-  width: 142px;
-  height: auto;
 }
 
 .header {
@@ -109,10 +113,6 @@ button {
   text-align: center;
   width: 2rem;
   height: 2rem;
-}
-
-i:hover {
-  opacity: 0.8;
 }
 
 .reload {

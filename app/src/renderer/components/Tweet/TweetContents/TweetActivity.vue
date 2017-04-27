@@ -55,7 +55,17 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+p,
+button {
+  margin-right: 2px;
+}
+
+p {
+  font-size: 0.7rem;
+  line-height: 0.7rem;
+}
+
 button {
   background-color: transparent;
   border: none;
@@ -74,16 +84,6 @@ ul {
   display: flex;
   align-items: center;
   margin-bottom: 0.5rem;
-}
-
-p,
-button {
-  margin-right: 2px;
-}
-
-p {
-  font-size: 0.7rem;
-  line-height: 0.7rem;
 }
 
 li:nth-child(4) {
@@ -113,14 +113,13 @@ a img:hover {
   transition-duration: 0.7s;
   color: #e0e8ee;
   font-size: 0.8rem;
-}
 
-.rt:hover,
-.fav:hover {
-  transition-property: background-color, color;
-  transition-duration: 0.7s;
-  background-color: #e0e8ee;
-  color: #fff;
+  &:hover {
+    transition-property: background-color, color;
+    transition-duration: 0.7s;
+    background-color: #e0e8ee;
+    color: #fff;
+  }
 }
 
 .retweeted {

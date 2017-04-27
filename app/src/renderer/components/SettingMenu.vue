@@ -6,11 +6,13 @@
         <span>自動更新の間隔</span>
       </p>
       <div class="col-12 col-sm-7">
-        <p v-for="item in autoReloadList" class="btn-group" data-toggle="buttons" @click="setAutoReload(item)">
-          <label class="btn btn-primary" :class="{active : item === autoReload}">
-            <input type="radio" name="reload" :value="item"> {{ item }} 秒
-          </label>
-        </p>
+        <div class="btn-group" data-toggle="buttons">
+          <p v-for="item in autoReloadList" class="btn btn-primary" :class="{active : item === autoReload}" @click="setAutoReload(item)">
+            <label>
+              <input type="radio" name="reload" :value="item"> {{ item }} 秒
+            </label>
+          </p>
+        </div>
       </div>
     </div>
     <hr>
@@ -20,11 +22,13 @@
         <span>最大保存件数</span>
       </p>
       <div class="col-12 col-sm-7">
-        <p v-for="item in imageCountList" class="btn-group" data-toggle="buttons" @click="setImageCount(item)">
-          <label class="btn btn-primary" :class="{active : item === imageCount}">
-            <input type="radio" name="reload" :value="item"> {{ item }} 枚
-          </label>
-        </p>
+        <div class="btn-group" data-toggle="buttons">
+          <p v-for="item in imageCountList" class="btn btn-primary" :class="{active : item === imageCount}" @click="setImageCount(item)">
+            <label>
+              <input type="radio" name="reload" :value="item"> {{ item }} 枚
+            </label>
+          </p>
+        </div>
       </div>
     </div>
     <hr>
@@ -102,6 +106,16 @@ hr {
   border-top: 1px solid #0a7bba;
 }
 
+input {
+  position: absolute;
+  clip: rect(0, 0, 0, 0);
+  pointer-events: none;
+}
+
+label {
+  margin: 0;
+}
+
 .btn-group {
   border: 2px solid #3ba3e0;
   border-radius: 10rem;
@@ -120,6 +134,10 @@ hr {
 .u-warning {
   color: red;
   font-size: 0.8rem;
+}
+
+.col-12 {
+  padding: 0;
 }
 
 .btn {
@@ -146,11 +164,4 @@ hr {
     width: 100%;
   }
 }
-
-input {
-  position: absolute;
-  clip: rect(0, 0, 0, 0);
-  pointer-events: none;
-}
-
 </style>

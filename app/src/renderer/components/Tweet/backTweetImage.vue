@@ -7,10 +7,10 @@
 </template>
 
 <script>
-/* @flow */
+  /* @flow */
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .card-media {
   border-radius: 4px 4px 0 0;
   height: auto;
@@ -25,10 +25,10 @@
 
 a {
   text-decoration: none;
-}
 
-a:hover {
-  transition-duration: 0.3s;
-  opacity: 0.7;
+  &:hover {
+    transition-duration: 0.3s;
+    opacity: 0.7;
+  }
 }
 </style>

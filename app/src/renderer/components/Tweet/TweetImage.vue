@@ -41,11 +41,11 @@ export default {
 a {
   display: inline;
   text-decoration: none;
-}
 
-a:hover {
-  transition-duration: 0.3s;
-  opacity: 0.7;
+  &:hover {
+    transition-duration: 0.3s;
+    opacity: 0.7;
+  }
 }
 
 li {

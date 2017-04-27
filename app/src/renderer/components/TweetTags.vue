@@ -27,7 +27,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 i {
   color: #fff !important;
   font-size: 0.8rem;
@@ -46,11 +46,11 @@ p {
   background-color: #ff94bc;
   border-radius: 1rem;
   margin-bottom: 0.2rem;
-}
 
-p:hover {
-  text-decoration: none !important;
-  transition-duration: 0.3s;
-  opacity: 0.7;
+  &:hover {
+    text-decoration: none !important;
+    transition-duration: 0.3s;
+    opacity: 0.7;
+  }
 }
 </style>
