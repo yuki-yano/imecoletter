@@ -11,10 +11,12 @@
       </a>
       <a :href="twitterLink" target="_blank">
         <h3> @{{ tweet.user.screen_name }} </h3>
+        <i class="fa fa-twitter-square unfollow" aria-hidden="true"></i>
+        <!--<i class="fa fa-twitter-square" :class="{'follow':isfollow 'unfollow':isunfollow }" aria-hidden="true"></i>-->
       </a>
     </li>
     <li>
-      <button type="button" name="button" class="follow" @click="toggleTweetExpansion">
+      <button type="button" name="button" @click="toggleTweetExpansion">
         <i class="fa" :class="{ 'fa-chevron-down': isDown, 'fa-chevron-up': !isDown }" aria-hidden="true"></i>
       </button>
     </li>
@@ -54,6 +56,7 @@ h2 {
 }
 
 h3 {
+  display: inline-block;
   font-size: 0.8rem;
   font-weight: 700;
   color: #667883;
@@ -72,11 +75,11 @@ button {
   outline: none;
   padding: 0;
   appearance: none;
-  height: 24px;
-  width: 24px;
+  height: 18px;
+  width: 18px;
   color: #e0e0e0;
   border-radius: 4px;
-  font-size: 1.2rem;
+  font-size: 1rem;
 }
 
 button:hover {
@@ -121,5 +124,11 @@ a img:hover {
 .c-card-header li:last-child {
   margin-left: auto;
   margin-right: 0.4px;
+}
+.following {
+  color: #006ADB;
+}
+.unfollow {
+  color: #E0E8EE;
 }
 </style>

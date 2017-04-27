@@ -27,6 +27,7 @@ export type ImageTweet = {|
   text: string,
   date: string,
   images: Array<Image>,
+  following: boolean,
   retweet: number,
   retweet_user: ?User,
   retweeted: boolean,
