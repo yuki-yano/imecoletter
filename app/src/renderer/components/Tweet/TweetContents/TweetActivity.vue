@@ -44,11 +44,9 @@ export default {
   },
   methods: {
     retweet () {
-      this.tweet.retweet += 1
       this.$store.dispatch(ACTION.RETWEET, { id: this.tweet.id })
     },
     fav () {
-      this.tweet.fav += 1
       this.$store.dispatch(ACTION.FAV, { id: this.tweet.id })
     }
   }

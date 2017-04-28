@@ -9,9 +9,10 @@ export const START_LOAD_IMAGE_TWEETS = 'START_LOAD_IMAGE_TWEETS'
 export const SET_IMAGE_TWEETS = 'SET_IMAGE_TWEETS'
 export const END_DISPLAY_REFRESH = 'END_DISPLAY_REFRESH'
 
-// RT & Fav
+// RT & Fav & Follow
 export const RETWEET = 'RETWEET'
 export const FAV = 'FAV'
+export const FOLLOW = 'FOLLOW'
 
 // Tags
 export const ADD_SEARCH_TAG = 'ADD_SEARCH_TAG'

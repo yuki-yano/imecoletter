@@ -74,7 +74,8 @@ async function getImageTweetFromID (id: string): Promise<ImageTweet | any> {
       id: data.id,
       name: data.name,
       screen_name: data.screen_name,
-      iconUrl: data.profile_image_url
+      iconUrl: data.profile_image_url,
+      following: true
     }
 
     const tweet = await client.get(`statuses/show/${id}`, {})
@@ -97,7 +98,8 @@ async function getImageTweetFromID (id: string): Promise<ImageTweet | any> {
         id: tweet.data.retweeted_status.user.id,
         name: tweet.data.retweeted_status.user.name,
         screen_name: tweet.data.retweeted_status.user.screen_name,
-        iconUrl: tweet.data.retweeted_status.user.profile_image_url
+        iconUrl: tweet.data.retweeted_status.user.profile_image_url,
+        following: tweet.data.retweeted_status.user.following
       }
       fav = tweet.data.retweeted_status.favorite_count
 
@@ -107,7 +109,6 @@ async function getImageTweetFromID (id: string): Promise<ImageTweet | any> {
         text: tweet.data.text,
         date: tweet.data.created_at,
         images,
-        following: true,
         retweet: tweet.data.retweet_count,
         retweet_user: user,
         retweeted: tweet.data.retweeted,
@@ -117,6 +118,13 @@ async function getImageTweetFromID (id: string): Promise<ImageTweet | any> {
       }
       return imageTweet
     } else {
+      const user: User = {
+        id: data.id,
+        name: data.name,
+        screen_name: data.screen_name,
+        iconUrl: data.profile_image_url,
+        following: true
+      }
       fav = tweet.data.favorite_count
       const imageTweet: ImageTweet = {
         id,
@@ -124,7 +132,6 @@ async function getImageTweetFromID (id: string): Promise<ImageTweet | any> {
         text: tweet.data.text,
         date: tweet.data.created_at,
         images,
-        following: true,
         retweet: tweet.data.retweet_count,
         retweet_user: null,
         retweeted: tweet.data.retweeted,
@@ -213,10 +220,10 @@ export default {
       commit(MUTATION.END_DISPLAY_REFRESH)
     }, 2500)
   },
-  [ACTION.START_LOAD_IMAGE_TWEETS]: async function ({ commit }: { commit: Function }) {
+  [ACTION.START_LOAD_IMAGE_TWEETS]: function ({ commit }: { commit: Function }) {
     commit(MUTATION.START_LOAD_IMAGE_TWEETS)
   },
-  [ACTION.END_DISPLAY_REFRESH]: async function ({ commit }: { commit: Function }) {
+  [ACTION.END_DISPLAY_REFRESH]: function ({ commit }: { commit: Function }) {
     commit(MUTATION.END_DISPLAY_REFRESH)
   },
   [ACTION.RETWEET]: async function ({ commit }: Function, { id }: { id: string }) {
@@ -228,5 +235,10 @@ export default {
     const client: Twit = createClient()
     await client.post('favorites/create', { id })
     commit(MUTATION.FAV, id)
+  },
+  [ACTION.FOLLOW]: async function ({ commit }: { commit: Function }, { userID }: { userID: string }) {
+    const client: Twit = createClient()
+    await client.post('friendships/create', { id: userID })
+    commit(MUTATION.FOLLOW, userID)
   }
 }

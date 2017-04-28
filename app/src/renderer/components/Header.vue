@@ -25,6 +25,7 @@
 
 <script>
 /* @flow */
+import Config from 'electron-config'
 import VueSticky from 'vue-sticky'
 
 import * as ACTION from 'vuex/action-types'
@@ -58,7 +59,8 @@ export default {
   },
   methods: {
     async reload () {
-      if (this.$store.state.auth.login) {
+      const config = new Config()
+      if (config.get('is_login')) {
         this.$store.dispatch(ACTION.SET_IMAGE_TWEETS)
         this.$store.dispatch(ACTION.START_LOAD_IMAGE_TWEETS)
       } else {

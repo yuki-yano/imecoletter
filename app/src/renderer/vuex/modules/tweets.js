@@ -1,5 +1,6 @@
 /* @flow */
 import Config from 'electron-config'
+import _ from 'lodash'
 
 import type { TweetsState } from 'types/mutation'
 import type { ImageTweet } from 'types/imageTweet'
@@ -34,18 +35,27 @@ const mutations = {
   [MUTATION.END_DISPLAY_REFRESH] (state: TweetsState) {
     state.refreshing = false
   },
-  [MUTATION.RETWEET] (state: TweetsState, id: string) {
+  [MUTATION.RETWEET] (state: TweetsState, tweetID: string) {
     state.imageTweets.forEach((tweet) => {
-      if (tweet.id === id) {
+      if (tweet.id === tweetID) {
         tweet.retweeted = true
+        tweet.retweet += 1
       }
     })
   },
-  [MUTATION.FAV] (state: TweetsState, id: string) {
+  [MUTATION.FAV] (state: TweetsState, tweetID: string) {
     state.imageTweets.forEach((tweet) => {
-      if (tweet.id === id) {
+      if (tweet.id === tweetID) {
         tweet.faved = true
+        tweet.fav += 1
       }
+    })
+  },
+  [MUTATION.FOLLOW] (state: TweetsState, userID: string) {
+    _.filter(state.imageTweets, (tweet) => {
+      return tweet.user.id === userID
+    }).map((tweet: ImageTweet) => {
+      tweet.user.following = true
     })
   }
 }
