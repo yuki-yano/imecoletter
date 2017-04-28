@@ -34,6 +34,27 @@
     <hr>
     <div class="d-flex justify-content-between row">
       <p class="col-12 col-sm-5 text-left">
+        <i class="fa fa-download" aria-hidden="true"></i>
+        <span>画像保存モード（デバッグ用）</span>
+      </p>
+      <div class="col-12 col-sm-7">
+        <div class="btn-group" data-toggle="buttons">
+          <p class="btn btn-primary" :class="{active : !$store.state.debug.saveMode}" @click="offSaveMode">
+            <label>
+              <input type="radio" name="save"> OFF
+            </label>
+          </p>
+          <p class="btn btn-primary" :class="{active : $store.state.debug.saveMode}" @click="onSaveMode">
+            <label>
+              <input type="radio" name="save"> ON
+            </label>
+          </p>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <div class="d-flex justify-content-between row">
+      <p class="col-12 col-sm-5 text-left">
         <i class="fa fa-sign-out"></i>
         <span>ログアウト</span>
       </p>
@@ -50,7 +71,7 @@
 
 <script>
 /* @flow */
-import electron from 'electron'
+import { remote } from 'electron'
 import Config from 'electron-config'
 import Router from 'vue-router'
 
@@ -76,11 +97,16 @@ export default {
       this.imageCount = count
       this.$store.dispatch(ACTION.SET_IMAGE_COUNT, { count, index })
     },
+    onSaveMode () {
+      this.$store.dispatch(ACTION.ON_SAVE_MODE)
+    },
+    offSaveMode () {
+      this.$store.dispatch(ACTION.OFF_SAVE_MODE)
+    },
     logout () {
       const router = new Router()
       this.$store.dispatch(ACTION.LOGOUT)
 
-      const remote = electron.remote
       remote.getCurrentWebContents().session.clearStorageData({ storages: ['cookies'] }, () => {})
       const config = new Config()
       config.delete('twitter_access_token')
@@ -103,8 +129,13 @@ export default {
         this.$store.dispatch(ACTION.SET_IMAGE_COUNT, { count: this.imageCountList[imageCountIndex], index: imageCountIndex })
       }
     } catch (e) {
-      const remote = electron.remote
       remote.getCurrentWebContents().session.clearStorageData({ storages: ['cookies'] }, () => {})
+    }
+
+    if (config.get('save_mode')) {
+      this.$store.dispatch(ACTION.ON_SAVE_MODE)
+    } else {
+      this.$store.dispatch(ACTION.OFF_SAVE_MODE)
     }
   }
 }

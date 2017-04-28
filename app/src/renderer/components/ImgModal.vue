@@ -2,7 +2,7 @@
   <div class="modal fade" id="imgmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="c-modal-contents">
-        <img v-if="$store.getters.modal !== null" :src="$store.getters.modal.url.base">
+        <img v-if="$store.getters.modal" :src="$store.getters.modal.url.base">
         <button type="button" data-dismiss="modal" aria-label="Close">
           <i class="fa fa-times" aria-hidden="true"></i>
         </button>

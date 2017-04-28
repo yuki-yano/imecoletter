@@ -25,3 +25,7 @@ export type SettingsState = {|
   autoReload: number,
   imageCount: number
 |}
+
+export type DebugState = {|
+  saveMode: boolean
+|}

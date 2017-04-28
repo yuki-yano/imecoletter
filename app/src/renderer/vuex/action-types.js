@@ -24,3 +24,7 @@ export const SET_IMAGE_MODAL = 'SET_IMAGE_MODAL'
 // Settings
 export const SET_AUTO_RELOAD = 'SET_AUTO_RELOAD'
 export const SET_IMAGE_COUNT = 'SET_IMAGE_COUNT'
+
+// Debug
+export const ON_SAVE_MODE = 'ON_SAVE_MODE'
+export const OFF_SAVE_MODE = 'OFF_SAVE_MODE'

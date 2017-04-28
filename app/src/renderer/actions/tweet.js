@@ -1,11 +1,14 @@
 /* @flow */
-import _ from 'lodash'
-import Twitter from 'twit'
-import type Twit from 'twit'
-import axios from 'axios'
-import AWS from 'aws-sdk'
+import fs from 'fs'
+import path from 'path'
 import Config from 'electron-config'
+import Twitter from 'twit'
+import axios from 'axios'
+import adapter from 'axios/lib/adapters/http'
+import AWS from 'aws-sdk'
+import _ from 'lodash'
 
+import type Twit from 'twit'
 import type { ImageTweet, Image, ImageUrl, Label } from 'types/imageTweet'
 import type { User } from 'types/user'
 
@@ -15,6 +18,8 @@ import * as MUTATION from 'vuex/mutation-types'
 import store from 'vuex/store'
 
 import appEnv from '../../../../env'
+
+const { app } = require('electron').remote // eslint-disable-line
 
 function createClient (): Twit {
   const config = new Config()
@@ -87,7 +92,8 @@ async function getImageTweetFromID (id: string): Promise<ImageTweet | any> {
       const image: Image = {
         url: baseUrlToImageUrl(media.media_url),
         labels: [],
-        rand: Math.random()
+        rand: Math.random(),
+        downloaded: false
       }
       return image
     })
@@ -187,7 +193,6 @@ export default {
     const imageTweetsPromise: Array<Promise<ImageTweet>> = imageTweetIds.map((id: string) => getImageTweetFromID(id))
 
     let imageTweets: Array<ImageTweet> = await Promise.all(imageTweetsPromise)
-    imageTweets = _.unionWith(imageTweets, store.state.tweets.imageTweets, (a, b) => a.id === b.id)
 
     // 情報を取得できなかったツイートを削除
     imageTweets = imageTweets.filter((tweet) => ('id' in tweet))
@@ -205,6 +210,35 @@ export default {
         }
       }))
     }))
+    imageTweets = _.unionWith(imageTweets, store.state.tweets.imageTweets, (a, b) => a.id === b.id)
+
+    if (process.env.NODE_ENV === 'production' && store.state.debug.saveMode) {
+      for (const tweet of imageTweets) {
+        for (const image of tweet.images) {
+          if (!image.downloaded) {
+            if (image.labels.map(label => label.name).includes('Comics') || image.labels.map(label => label.name).includes('Manga')) {
+              axios({
+                method: 'get',
+                url: image.url.base,
+                responseType: 'stream',
+                adapter
+              }).then(response => {
+                response.data.pipe(fs.createWriteStream(path.join(app.getPath('home'), 'Desktop', 'Comics', image.url.base.split('/').pop())))
+              })
+            } else {
+              axios({
+                method: 'get',
+                url: image.url.base,
+                responseType: 'stream',
+                adapter
+              }).then(response => {
+                response.data.pipe(fs.createWriteStream(path.join(app.getPath('home'), 'Desktop', 'Others', image.url.base.split('/').pop())))
+              })
+            }
+          }
+        }
+      }
+    }
 
     // ラベルが存在しないツイートを削除
     imageTweets = imageTweets.filter((tweet) => {

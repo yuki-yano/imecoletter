@@ -18,7 +18,8 @@ export type Label = {|
 export type Image = {|
   url: ImageUrl,
   labels: Array<Label>,
-  rand: number
+  rand: number,
+  downloaded: boolean
 |}
 
 export type ImageTweet = {|

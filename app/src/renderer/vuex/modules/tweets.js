@@ -22,6 +22,11 @@ const state: TweetsState = {
 
 const mutations = {
   [MUTATION.SET_IMAGE_TWEETS] (state: TweetsState, imageTweets: Array<ImageTweet>) {
+    for (const tweet of imageTweets) {
+      for (const image of tweet.images) {
+        image.downloaded = true
+      }
+    }
     state.imageTweets = imageTweets
     config.set('image_tweets', imageTweets)
     state.loading = false
