@@ -1,11 +1,13 @@
 <template>
   <div id="login">
-    <h2>TLのイラストツイートを<br>
-      表示・保存するだけ</h2>
-    <h1>
-      <img src="./Login/assets/title.png">
-    </h1>
-    <button @click="authDialog" class="md-raised md-primary">ログイン</button>
+    <div class="display-center">
+      <h2>TLのイラストツイートを<br>
+        表示・保存するだけ</h2>
+      <h1>
+        <img src="./Login/assets/title.png">
+      </h1>
+      <button @click="authDialog" class="md-raised md-primary">ログイン</button>
+    </div>
   </div>
 </template>
 
@@ -54,9 +56,8 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 #login {
-  padding-top: 50px;
   height: 100%;
   background-color: #32adf4;
 }
@@ -86,9 +87,26 @@ button {
 }
 
 button {
+  margin-top: 2rem;
   display: block;
   background-color: #fff;
-  width: 80%;
+  width: 40%;
   border-radius: 100px;
+  padding: 0.3rem 5rem;
+  color: #fff;
+  background-color: #74caff;
+
+  &:hover {
+    transition-property: 3s;
+    opacity: 0.7;
+  }
+}
+
+.display-center {
+  position: absolute;
+  top: 20%;
+  left: 10%;
+  right: 10%;
+  bottom: 25%;
 }
 </style>

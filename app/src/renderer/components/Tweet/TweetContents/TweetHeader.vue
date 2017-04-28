@@ -9,7 +9,7 @@
       <a :href="twitterLink" target="_blank">
         <h2> {{ tweet.user.name }} </h2>
       </a>
-      <p class="d-flex align-items-center">
+      <p class="d-flex align-items-end">
         <a :href="twitterLink" target="_blank">
           <h3> @{{ tweet.user.screen_name }} </h3>
         </a>
