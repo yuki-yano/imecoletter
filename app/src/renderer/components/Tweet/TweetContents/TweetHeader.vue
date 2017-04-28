@@ -9,11 +9,13 @@
       <a :href="twitterLink" target="_blank">
         <h2> {{ tweet.user.name }} </h2>
       </a>
-      <a :href="twitterLink" target="_blank">
-        <h3> @{{ tweet.user.screen_name }} </h3>
+      <p class="d-flex align-items-center">
+        <a :href="twitterLink" target="_blank">
+          <h3> @{{ tweet.user.screen_name }} </h3>
+        </a>
         <i class="fa fa-twitter-square unfollow" aria-hidden="true"></i>
-        <!--<i class="fa fa-twitter-square" :class="{'follow':isfollow 'unfollow':isunfollow }" aria-hidden="true"></i>-->
-      </a>
+      </p>
+      <!--<i class="fa fa-twitter-square" :class="{'follow':isfollow 'unfollow':isunfollow }" aria-hidden="true"></i>-->
     </li>
     <li>
       <button type="button" name="button" @click="toggleTweetExpansion">
@@ -52,14 +54,14 @@ h2 {
   font-size: 0.9rem;
   font-weight: 700;
   color: #000;
-  margin-bottom: 0.2rem;
+  margin-bottom: 0.5rem;
 }
 
 h3 {
-  display: inline-block;
   font-size: 0.8rem;
   font-weight: 700;
   color: #667883;
+  margin-right: 0.2rem;
 }
 
 ul {
@@ -77,7 +79,7 @@ button {
   appearance: none;
   height: 18px;
   width: 18px;
-  color: #e0e0e0;
+  color: #8c8c8c;
   border-radius: 4px;
   font-size: 1rem;
 
@@ -132,5 +134,9 @@ a {
 
 .unfollow {
   color: #e0e8ee;
+}
+
+.fa-twitter-square {
+  margin-top: -0.4rem;
 }
 </style>

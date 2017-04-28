@@ -65,7 +65,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 @import url(//fonts.googleapis.com/css?family=Lato:300);
 @import url(//fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic);
 @import url(//fonts.googleapis.com/icon?family=Material+Icons);
@@ -95,12 +95,18 @@ button {
   padding: 0;
   appearance: none;
   text-align: center;
-}
 
-button:disabled {
-  outline: none;
-  border: none;
-  box-shadow: none;
+  &:disabled {
+    outline: none;
+    border: none;
+    box-shadow: none;
+  }
+
+  &:focus {
+    outline: none;
+    border: none;
+    box-shadow: none;
+  }
 }
 
 h1,

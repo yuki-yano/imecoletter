@@ -1,7 +1,7 @@
 <template>
   <div class="collapse" id="collapseExample">
     <div class="d-flex justify-content-between row">
-      <p class="col-12 col-sm-5">
+      <p class="col-12 col-sm-5 text-left">
         <i class="fa fa-clock-o" aria-hidden="true"></i>
         <span>自動更新の間隔</span>
       </p>
@@ -17,7 +17,7 @@
     </div>
     <hr>
     <div class="d-flex justify-content-between row">
-      <p class="col-12 col-sm-5">
+      <p class="col-12 col-sm-5 text-left">
         <i class="fa fa-picture-o" aria-hidden="true"></i>
         <span>最大保存件数</span>
       </p>
@@ -33,9 +33,9 @@
     </div>
     <hr>
     <div class="d-flex justify-content-between row">
-      <p class="col-12 col-sm-5">
-        <i class="fa fa-sign-out text-right"></i>
-        <span class="text-right">ログアウト</span>
+      <p class="col-12 col-sm-5 text-left">
+        <i class="fa fa-sign-out"></i>
+        <span>ログアウト</span>
       </p>
       <div class="col-12 col-sm-7">
         <p class="btn-group btn-group-warning">

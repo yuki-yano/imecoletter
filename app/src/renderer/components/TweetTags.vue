@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="text-left">
     <p v-for="label in labels" @click="removeTag(label.name)" :key="tagKey(label)" :label="label">
       {{ label.name }}<i class="fa fa-times" aria-hidden="true"></i>
     </p>
