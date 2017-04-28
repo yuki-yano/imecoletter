@@ -21,7 +21,7 @@ const state: TweetsState = {
 }
 
 const mutations = {
-  [MUTATION.SET_IMAGE_TWEETS] (state: TweetsState, { imageTweets }: { imageTweets: Array<ImageTweet> }) {
+  [MUTATION.SET_IMAGE_TWEETS] (state: TweetsState, imageTweets: Array<ImageTweet>) {
     state.imageTweets = imageTweets
     config.set('image_tweets', imageTweets)
     state.loading = false

@@ -213,7 +213,7 @@ export default {
     })
     imageTweets = _.take(imageTweets, store.state.settings.imageCount)
 
-    commit(MUTATION.SET_IMAGE_TWEETS, { imageTweets })
+    commit(MUTATION.SET_IMAGE_TWEETS, imageTweets)
 
     commit(MUTATION.START_DISPLAY_REFRESH)
     setTimeout(() => {
