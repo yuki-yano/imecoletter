@@ -7,7 +7,7 @@
       </p>
       <div class="col-12 col-sm-7">
         <div class="btn-group" data-toggle="buttons">
-          <p v-for="item in autoReloadList" class="btn btn-primary" :class="{active : item === autoReload}" @click="setAutoReload(item)">
+          <p v-for="(item, index) in autoReloadList" class="btn btn-primary" :class="{active : item === autoReload}" @click="setAutoReload(item, index)">
             <label>
               <input type="radio" name="reload" :value="item"> {{ item }} 秒
             </label>
@@ -23,7 +23,7 @@
       </p>
       <div class="col-12 col-sm-7">
         <div class="btn-group" data-toggle="buttons">
-          <p v-for="item in imageCountList" class="btn btn-primary" :class="{active : item === imageCount}" @click="setImageCount(item)">
+          <p v-for="(item, index) in imageCountList" class="btn btn-primary" :class="{active : item === imageCount}" @click="setImageCount(item, index)">
             <label>
               <input type="radio" name="reload" :value="item"> {{ item }} 枚
             </label>
@@ -61,31 +61,50 @@ export default {
   name: 'setting-menu',
   data () {
     return {
-      autoReload: 90,
+      autoReload: 300,
       autoReloadList: [90, 180, 300, 420, 600],
-      imageCount: 1000,
+      imageCount: 500,
       imageCountList: [100, 300, 500, 700, 1000]
     }
   },
   methods: {
-    setAutoReload (time: number) {
+    setAutoReload (time: number, index: number) {
       this.autoReload = time
-      this.$store.dispatch(ACTION.SET_AUTO_RELOAD, { time })
+      this.$store.dispatch(ACTION.SET_AUTO_RELOAD, { time, index })
     },
-    setImageCount (count: number) {
+    setImageCount (count: number, index: number) {
       this.imageCount = count
-      this.$store.dispatch(ACTION.SET_IMAGE_COUNT, { count })
+      this.$store.dispatch(ACTION.SET_IMAGE_COUNT, { count, index })
     },
     logout () {
       const router = new Router()
       this.$store.dispatch(ACTION.LOGOUT)
 
       const remote = electron.remote
-      const config = new Config()
       remote.getCurrentWebContents().session.clearStorageData({ storages: ['cookies'] }, () => {})
+      const config = new Config()
       config.delete('twitter_access_token')
       config.delete('twitter_access_secret')
       router.push(ROUTE.LOGIN)
+    }
+  },
+  mounted () {
+    const config = new Config()
+
+    try {
+      const autoReloadIndex = config.get('auto_reload_index')
+      if (autoReloadIndex !== undefined) {
+        this.autoReload = this.autoReloadList[autoReloadIndex]
+        this.$store.dispatch(ACTION.SET_AUTO_RELOAD, { time: this.autoReloadList[autoReloadIndex], index: autoReloadIndex })
+      }
+      const imageCountIndex = config.get('image_count_index')
+      if (imageCountIndex !== undefined) {
+        this.imageCount = this.imageCountList[imageCountIndex]
+        this.$store.dispatch(ACTION.SET_IMAGE_COUNT, { count: this.imageCountList[imageCountIndex], index: imageCountIndex })
+      }
+    } catch (e) {
+      const remote = electron.remote
+      remote.getCurrentWebContents().session.clearStorageData({ storages: ['cookies'] }, () => {})
     }
   }
 }

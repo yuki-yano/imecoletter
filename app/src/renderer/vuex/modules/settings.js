@@ -9,23 +9,17 @@ const state: SettingsState = {
   autoReload: 90,
   imageCount: 1000
 }
-const config = new Config()
-
-if (config.get('auto_reload') !== undefined) {
-  state.autoReload = config.get('auto_reload')
-}
-if (config.get('auto_reload') !== undefined) {
-  state.autoReload = config.get('auto_reload')
-}
 
 const mutations = {
-  [MUTATION.SET_AUTO_RELOAD] (state: SettingsState, time: number) {
+  [MUTATION.SET_AUTO_RELOAD] (state: SettingsState, { time, index }: { time: number, index: number }) {
     state.autoReload = time
-    config.set('auto_reload', time)
+    const config = new Config()
+    config.set('auto_reload_index', index)
   },
-  [MUTATION.SET_IMAGE_COUNT] (state: SettingsState, count: number) {
+  [MUTATION.SET_IMAGE_COUNT] (state: SettingsState, { count, index }: { count: number, index: number }) {
     state.imageCount = count
-    config.set('image_count', count)
+    const config = new Config()
+    config.set('image_count_index', index)
   }
 }
 
