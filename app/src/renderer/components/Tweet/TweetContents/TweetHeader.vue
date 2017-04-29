@@ -129,7 +129,7 @@ a {
 }
 
 .following {
-  color: #006adb;
+  color: #1DA1F2;
 }
 
 .unfollow {
