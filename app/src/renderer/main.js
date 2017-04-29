@@ -2,7 +2,6 @@
 import Vue from 'vue'
 import Electron from 'vue-electron'
 import Router from 'vue-router'
-import VueLazyLoad from 'vue-lazyload'
 
 import App from './App'
 import routes from './routes'
@@ -17,7 +16,6 @@ import 'sweetalert/dist/sweetalert.css'
 
 Vue.use(Electron)
 Vue.use(Router)
-Vue.use(VueLazyLoad)
 
 Vue.config.debug = true
 
