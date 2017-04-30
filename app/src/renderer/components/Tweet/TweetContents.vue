@@ -1,6 +1,6 @@
 <template>
   <div class="c-card-text">
-    <tweet-header :tweet="tweet"></tweet-header>
+    <tweet-header @toggle-tweet-expansion="toggleTweetExpansion" :tweet="tweet"></tweet-header>
     <tweet-activity :tweet="tweet"></tweet-activity>
     <transition name="fade">
       <tweet-detail v-if="expansionFlag" :tweet="tweet"></tweet-detail>
@@ -28,6 +28,11 @@ export default {
   data () {
     return {
       expansionFlag: false
+    }
+  },
+  methods: {
+    toggleTweetExpansion () {
+      this.expansionFlag = !this.expansionFlag
     }
   }
 }

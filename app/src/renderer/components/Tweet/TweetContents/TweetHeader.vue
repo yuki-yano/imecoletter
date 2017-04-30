@@ -13,11 +13,13 @@
         <a :href="twitterLink" target="_blank">
           <h3> @{{ tweet.user.screen_name }} </h3>
         </a>
-        <i @click="follow(tweet.user.id)" class="fa fa-twitter-square" :class="{ 'following': tweet.user.following, 'unfollow': !tweet.user.following }" aria-hidden="true"></i>
+        <button type="button" name="button" @click="follow(tweet.user.id)" >
+          <i class="fa fa-twitter-square" :class="{ 'following': tweet.user.following, 'unfollow': !tweet.user.following }" aria-hidden="true"></i>
+        </button>
       </p>
     </li>
     <li>
-      <button type="button" name="button">
+      <button type="button" name="button" @click="toggleTweetExpansion">
         <i class="fa" :class="{ 'fa-chevron-down': isDown, 'fa-chevron-up': !isDown }" aria-hidden="true"></i>
       </button>
     </li>
@@ -44,6 +46,10 @@ export default {
   methods: {
     follow (userID: number) {
       this.$store.dispatch(ACTION.FOLLOW, { userID })
+    },
+    toggleTweetExpansion () {
+      this.$emit('toggle-tweet-expansion')
+      this.isDown = !this.isDown
     }
   }
 }
