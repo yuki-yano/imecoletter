@@ -79,7 +79,7 @@ export default {
     }
   },
   directives: {
-    'sticky': VueSticky
+    sticky: VueSticky
   },
   mounted () {
     this.reload()

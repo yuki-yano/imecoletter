@@ -12,7 +12,10 @@ const state: AuthState = {
 }
 
 const mutations = {
-  [MUTATION.LOGIN] (state: AuthState, { accessToken, accessSecret }: {accessToken: string, accessSecret: string}) {
+  [MUTATION.LOGIN] (
+    state: AuthState,
+    { accessToken, accessSecret }: { accessToken: string, accessSecret: string }
+  ) {
     const config = new Config()
     config.set('twitter_access_token', accessToken)
     config.set('twitter_access_secret', accessSecret)

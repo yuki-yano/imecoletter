@@ -25,20 +25,23 @@ export default {
   methods: {
     authDialog () {
       ipcRenderer.send('twitter-login')
-      ipcRenderer.on('twitter-login-success', (_ev, accessToken, accessSecret) => {
-        swal({
-          title: 'ログインに成功しました',
-          type: 'success'
-        })
+      ipcRenderer.on(
+        'twitter-login-success',
+        (_ev, accessToken, accessSecret) => {
+          swal({
+            title: 'ログインに成功しました',
+            type: 'success'
+          })
 
-        const router = new Router()
-        router.push(ROUTE.HOME)
-        this.$store.dispatch(ACTION.LOGIN, {
-          accessToken: accessToken,
-          accessSecret: accessSecret
-        })
-      })
-      ipcRenderer.on('twitter-login-fail', (_ev) => {
+          const router = new Router()
+          router.push(ROUTE.HOME)
+          this.$store.dispatch(ACTION.LOGIN, {
+            accessToken: accessToken,
+            accessSecret: accessSecret
+          })
+        }
+      )
+      ipcRenderer.on('twitter-login-fail', _ev => {
         // 仕様で絶対飛んできてしまうのでログイン状態を見てアラートを出す
         const config = new Config()
         setTimeout(() => {

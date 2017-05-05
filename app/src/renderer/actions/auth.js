@@ -17,7 +17,9 @@ export default {
     })
 
     try {
-      const result = await client.get('account/verify_credentials', { skip_status: true })
+      const result = await client.get('account/verify_credentials', {
+        skip_status: true
+      })
       if ('errors' in result.data) {
         commit(MUTATION.LOGOUT)
       } else {

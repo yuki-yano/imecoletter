@@ -15,7 +15,7 @@ const mutations = {
     }
   },
   [MUTATION.REMOVE_SEARCH_TAG] (state: SearchState, labelName: string) {
-    state.labels = state.labels.filter((label) => {
+    state.labels = state.labels.filter(label => {
       return label.name !== labelName
     })
   }

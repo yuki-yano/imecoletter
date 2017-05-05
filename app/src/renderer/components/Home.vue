@@ -41,13 +41,16 @@ export default {
     filteredTweets (): Array<ImageTweet> {
       const result: Array<ImageTweet> = []
 
-      this.imageTweets.map((tweet) => {
-        tweet.images.map((image) => {
+      this.imageTweets.map(tweet => {
+        tweet.images.map(image => {
           const labelNames = []
-          image.labels.map((label) => {
+          image.labels.map(label => {
             labelNames.push(label.name)
           })
-          if (_.intersection(labelNames, this.filters.map(label => label.name)).length > 0) {
+          if (
+            _.intersection(labelNames, this.filters.map(label => label.name))
+              .length > 0
+          ) {
             result.push(tweet)
           }
         })

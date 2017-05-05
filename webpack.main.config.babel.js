@@ -49,9 +49,7 @@ const mainConfig = {
   ],
   resolve: {
     extensions: ['.js', '.json', '.node'],
-    modules: [
-      path.join(__dirname, 'app/node_modules')
-    ]
+    modules: [path.join(__dirname, 'app/node_modules')]
   },
   target: 'electron-main'
 }

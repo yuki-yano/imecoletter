@@ -34,12 +34,12 @@ export default {
   },
   computed: {
     topLabels (): Array<Label> {
-      return this.tweet.images.map((image) => {
+      return this.tweet.images.map(image => {
         return _.take(image.labels, 5)
       })
     },
     restLabels (): Array<Label> {
-      return this.tweet.images.map((image) => {
+      return this.tweet.images.map(image => {
         return _.takeRight(image.labels, image.labels.length - 5)
       })
     }
@@ -57,7 +57,7 @@ export default {
   },
   mounted () {
     let index: number = 0
-    this.tweet.images.map((_image) => {
+    this.tweet.images.map(_image => {
       this.isAllLabel[index] = false
       index += 1
     })

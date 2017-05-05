@@ -15,7 +15,10 @@ import * as ACTION from 'vuex/action-types'
 import * as ROUTE from 'constants/route'
 import appEnv from '../../../env'
 
-async function isLogin (accessToken: ?string, accessSecret: ?string): Promise<boolean> {
+async function isLogin (
+  accessToken: ?string,
+  accessSecret: ?string
+): Promise<boolean> {
   const config = new Config()
   if (!accessToken && !accessSecret) {
     config.set('is_login', false)
@@ -29,7 +32,9 @@ async function isLogin (accessToken: ?string, accessSecret: ?string): Promise<bo
     access_token_secret: accessSecret
   })
   try {
-    const result = await client.get('account/verify_credentials', { skip_status: true })
+    const result = await client.get('account/verify_credentials', {
+      skip_status: true
+    })
     if ('errors' in result.data) {
       config.set('is_login', false)
       return false

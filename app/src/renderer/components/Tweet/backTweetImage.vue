@@ -7,7 +7,7 @@
 </template>
 
 <script>
-  /* @flow */
+/* @flow */
 </script>
 
 <style lang="scss" scoped>

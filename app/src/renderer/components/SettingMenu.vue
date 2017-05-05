@@ -107,7 +107,9 @@ export default {
       const router = new Router()
       this.$store.dispatch(ACTION.LOGOUT)
 
-      remote.getCurrentWebContents().session.clearStorageData({ storages: ['cookies'] }, () => {})
+      remote
+        .getCurrentWebContents()
+        .session.clearStorageData({ storages: ['cookies'] }, () => {})
       const config = new Config()
       config.delete('twitter_access_token')
       config.delete('twitter_access_secret')
@@ -121,15 +123,23 @@ export default {
       const autoReloadIndex = config.get('auto_reload_index')
       if (autoReloadIndex !== undefined) {
         this.autoReload = this.autoReloadList[autoReloadIndex]
-        this.$store.dispatch(ACTION.SET_AUTO_RELOAD, { time: this.autoReloadList[autoReloadIndex], index: autoReloadIndex })
+        this.$store.dispatch(ACTION.SET_AUTO_RELOAD, {
+          time: this.autoReloadList[autoReloadIndex],
+          index: autoReloadIndex
+        })
       }
       const imageCountIndex = config.get('image_count_index')
       if (imageCountIndex !== undefined) {
         this.imageCount = this.imageCountList[imageCountIndex]
-        this.$store.dispatch(ACTION.SET_IMAGE_COUNT, { count: this.imageCountList[imageCountIndex], index: imageCountIndex })
+        this.$store.dispatch(ACTION.SET_IMAGE_COUNT, {
+          count: this.imageCountList[imageCountIndex],
+          index: imageCountIndex
+        })
       }
     } catch (e) {
-      remote.getCurrentWebContents().session.clearStorageData({ storages: ['cookies'] }, () => {})
+      remote
+        .getCurrentWebContents()
+        .session.clearStorageData({ storages: ['cookies'] }, () => {})
     }
 
     if (config.get('save_mode')) {
