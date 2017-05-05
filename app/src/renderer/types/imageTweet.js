@@ -7,7 +7,7 @@ export type ImageUrl = {|
   medium: string,
   large: string,
   original: string
-|};
+|}
 
 export type Label = {|
   name: string,
@@ -33,5 +33,6 @@ export type ImageTweet = {|
   retweeted: boolean,
   fav: number,
   faved: boolean,
+  labelled: boolean,
   rand: number
 |}

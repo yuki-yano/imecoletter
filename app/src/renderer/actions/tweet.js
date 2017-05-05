@@ -25,6 +25,7 @@ function createClient (): Twit {
   const config = new Config()
   const accessToken: string = config.get('twitter_access_token')
   const accessSecret: string = config.get('twitter_access_secret')
+
   return new Twitter({
     consumer_key: appEnv.TWITTER_KEY,
     consumer_secret: appEnv.TWITTER_SECRET,
@@ -50,12 +51,23 @@ async function getImageTweetId (): Promise<Array<string>> {
     let tweets = await client.get('statuses/home_timeline', { count: 200 })
 
     // 複数枚画像ツイート
-    tweets = tweets.data.filter((t) => { return 'extended_entities' in t })
-                        .filter((t) => { return 'media' in t.extended_entities })
-                        .filter((t) => { return t.user.protected === false })
-                        .filter((t) => { return t.extended_entities.media[0].expanded_url.match(/photo/) })
+    tweets = tweets.data
+      .filter(t => {
+        return 'extended_entities' in t
+      })
+      .filter(t => {
+        return 'media' in t.extended_entities
+      })
+      .filter(t => {
+        return t.user.protected === false
+      })
+      .filter(t => {
+        return t.extended_entities.media[0].expanded_url.match(/photo/)
+      })
 
-    return tweets.map((t) => { return t.id_str })
+    return tweets.map(t => {
+      return t.id_str
+    })
   } catch (e) {
     return []
   }
@@ -120,6 +132,7 @@ async function getImageTweetFromID (id: string): Promise<ImageTweet | any> {
         retweeted: tweet.data.retweeted,
         fav,
         faved: tweet.data.favorited,
+        labelled: false,
         rand: Math.random()
       }
       return imageTweet
@@ -143,6 +156,7 @@ async function getImageTweetFromID (id: string): Promise<ImageTweet | any> {
         retweeted: tweet.data.retweeted,
         fav,
         faved: tweet.data.favorited,
+        labelled: false,
         rand: Math.random()
       }
       return imageTweet
@@ -153,7 +167,7 @@ async function getImageTweetFromID (id: string): Promise<ImageTweet | any> {
   }
 }
 
-async function imageToLabel (url: string): Promise<Array<Label>> {
+async function imageToLabel (image: Image): Promise<Array<Label>> {
   // for (const tweet: ImageTweet of store.state.tweets.imageTweets) {
   //   for (const image: Image of tweet.images) {
   //     if (image.url.base === url) {
@@ -162,10 +176,16 @@ async function imageToLabel (url: string): Promise<Array<Label>> {
   //   }
   // }
 
-  const response = await axios({ method: 'get', url: url, responseType: 'arraybuffer' })
+  const response = await axios({
+    method: 'get',
+    url: image.url.base,
+    responseType: 'arraybuffer'
+  })
 
   const rekognition = new AWS.Rekognition({
-    accessKeyId: appEnv.AWS_ACCESS_KEY_ID, secretAccessKey: appEnv.AWS_SECRET_ACCESS_KEY, region: 'us-east-1'
+    accessKeyId: appEnv.AWS_ACCESS_KEY_ID,
+    secretAccessKey: appEnv.AWS_SECRET_ACCESS_KEY,
+    region: 'us-east-1'
   })
   var params = {
     Image: {
@@ -173,8 +193,10 @@ async function imageToLabel (url: string): Promise<Array<Label>> {
     }
   }
 
-  const dataPromise:Promise<Object> = rekognition.detectLabels(params).promise()
-  return dataPromise.then((data) => {
+  const dataPromise: Promise<Object> = rekognition
+    .detectLabels(params)
+    .promise()
+  return dataPromise.then(data => {
     const labels: Array<Label> = data.Labels.map(l => {
       const label: Label = {
         name: l.Name,
@@ -187,62 +209,74 @@ async function imageToLabel (url: string): Promise<Array<Label>> {
   })
 }
 
+function tweetToLabelTweet (tweet: ImageTweet): Promise<ImageTweet> {
+  return new Promise((resolve, reject) => {
+    try {
+      for (const image of tweet.images) {
+        imageToLabel(image).then((labels: Array<Label>) => {
+          try {
+            image.labels = labels
+            tweet.labelled = true
+          } catch (e) {
+            console.error(e)
+            tweet.labelled = true
+          }
+        })
+      }
+      resolve(tweet)
+    } catch (e) {
+      console.error(e)
+      tweet.labelled = true
+      reject(e)
+    }
+  }).then(tweet => {
+    return tweet
+  })
+}
+
 export default {
   [ACTION.SET_IMAGE_TWEETS]: async function ({ commit }: { commit: Function }) {
     const imageTweetIds: Array<string> = await getImageTweetId()
-    const imageTweetsPromise: Array<Promise<ImageTweet>> = imageTweetIds.map((id: string) => getImageTweetFromID(id))
-
-    let imageTweets: Array<ImageTweet> = await Promise.all(imageTweetsPromise)
+    const imageTweetsFromIDsPromise: Array<Promise<ImageTweet>> = imageTweetIds.map((id: string) => getImageTweetFromID(id))
+    let imageTweets: Array<ImageTweet> = await Promise.all(
+      imageTweetsFromIDsPromise
+    )
 
     // 情報を取得できなかったツイートを削除
-    imageTweets = imageTweets.filter((tweet) => ('id' in tweet))
+    imageTweets = imageTweets.filter(tweet => 'id' in tweet)
 
     // 画像にラベルを付与
-    await Promise.all(imageTweets.map(async (imageTweet: ImageTweet) => {
-      await Promise.all(imageTweet.images.map(async (image: Image) => {
-        if (image.labels.length === 0) {
-          try {
-            image.labels = await imageToLabel(image.url.base)
-          } catch (e) {
-            console.error(e)
-            image.labels = []
-          }
-        }
-      }))
-    }))
-    imageTweets = _.unionWith(imageTweets, store.state.tweets.imageTweets, (a, b) => a.id === b.id)
+    const labeledImageTweetsPromise: Array<Promise<ImageTweet>> = imageTweets.map((tweet: ImageTweet) => {
+      return tweetToLabelTweet(tweet)
+    })
+    imageTweets = await Promise.all(labeledImageTweetsPromise)
 
-    if (process.env.NODE_ENV === 'production' && store.state.debug.saveMode) {
-      for (const tweet of imageTweets) {
-        for (const image of tweet.images) {
-          if (!image.downloaded) {
-            if (image.labels.map(label => label.name).includes('Comics') || image.labels.map(label => label.name).includes('Manga')) {
-              axios({
-                method: 'get',
-                url: image.url.base,
-                responseType: 'stream',
-                adapter
-              }).then(response => {
-                response.data.pipe(fs.createWriteStream(path.join(app.getPath('home'), 'Desktop', 'Comics', image.url.base.split('/').pop())))
-              })
-            } else {
-              axios({
-                method: 'get',
-                url: image.url.base,
-                responseType: 'stream',
-                adapter
-              }).then(response => {
-                response.data.pipe(fs.createWriteStream(path.join(app.getPath('home'), 'Desktop', 'Others', image.url.base.split('/').pop())))
-              })
-            }
-          }
-        }
+    const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
+    // 全てのラベリングが終わるまでここで止める
+    while (true) {
+      const allLabelled = _.map(imageTweets, 'labelled')
+      await sleep(1000)
+      if (!allLabelled.includes(false)) {
+        break
       }
     }
 
+    imageTweets = _.unionWith(
+      imageTweets,
+      store.state.tweets.imageTweets,
+      (a, b) => a.id === b.id
+    )
+
+    // 機械学習用ダウンロード処理
+    if (process.env.NODE_ENV === 'production' && store.state.debug.saveMode) {
+      comicsAndOthersDownload(imageTweets)
+    }
+
     // ラベルが存在しないツイートを削除
-    imageTweets = imageTweets.filter((tweet) => {
-      const images: Array<Image> = tweet.images.filter((image) => image.labels !== [])
+    imageTweets = imageTweets.filter(tweet => {
+      const images: Array<Image> = tweet.images.filter(
+        image => image.labels !== []
+      )
       return images !== []
     })
     imageTweets = _.take(imageTweets, store.state.settings.imageCount)
@@ -260,19 +294,77 @@ export default {
   [ACTION.END_DISPLAY_REFRESH]: function ({ commit }: { commit: Function }) {
     commit(MUTATION.END_DISPLAY_REFRESH)
   },
-  [ACTION.RETWEET]: async function ({ commit }: Function, { id }: { id: string }) {
+  [ACTION.RETWEET]: async function (
+    { commit }: Function,
+    { id }: { id: string }
+  ) {
     const client: Twit = createClient()
     await client.post('statuses/retweet/:id', { id })
     commit(MUTATION.RETWEET, id)
   },
-  [ACTION.FAV]: async function ({ commit }: { commit: Function }, { id }: { id: string }) {
+  [ACTION.FAV]: async function (
+    { commit }: { commit: Function },
+    { id }: { id: string }
+  ) {
     const client: Twit = createClient()
     await client.post('favorites/create', { id })
     commit(MUTATION.FAV, id)
   },
-  [ACTION.FOLLOW]: async function ({ commit }: { commit: Function }, { userID }: { userID: string }) {
+  [ACTION.FOLLOW]: async function (
+    { commit }: { commit: Function },
+    { userID }: { userID: string }
+  ) {
     const client: Twit = createClient()
     await client.post('friendships/create', { id: userID })
     commit(MUTATION.FOLLOW, userID)
+  }
+}
+
+function comicsAndOthersDownload (imageTweets: Array<ImageTweet>) {
+  for (const tweet of imageTweets) {
+    for (const image of tweet.images) {
+      if (!image.downloaded) {
+        if (
+          image.labels.map(label => label.name).includes('Comics') ||
+          image.labels.map(label => label.name).includes('Manga')
+        ) {
+          axios({
+            method: 'get',
+            url: image.url.base,
+            responseType: 'stream',
+            adapter
+          }).then(response => {
+            response.data.pipe(
+              fs.createWriteStream(
+                path.join(
+                  app.getPath('home'),
+                  'Desktop',
+                  'Comics',
+                  image.url.base.split('/').pop()
+                )
+              )
+            )
+          })
+        } else {
+          axios({
+            method: 'get',
+            url: image.url.base,
+            responseType: 'stream',
+            adapter
+          }).then(response => {
+            response.data.pipe(
+              fs.createWriteStream(
+                path.join(
+                  app.getPath('home'),
+                  'Desktop',
+                  'Others',
+                  image.url.base.split('/').pop()
+                )
+              )
+            )
+          })
+        }
+      }
+    }
   }
 }
