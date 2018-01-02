@@ -1,79 +1,78 @@
-root: true
-
-parser: babel-eslint
-
-parserOption:
-  sourceType: module
-
-  env:
-  browser: true
-  node: true
-
-extends:
-  - standard
-  - plugin:import/errors
-
-plugins:
-  - html
-  - import
-  - flowtype
-
-rules:
-  # add more rules
-  prefer-const: 2
-  no-unused-vars:
-    - 2
-    - args: all
-      varsIgnorePattern: "^_.+"
-      argsIgnorePattern: "^_.+"
-      caughtErrorsIgnorePatter: '^_'
-  no-multiple-empty-lines:
-    - 2
-    - max: 1
-  # import
-  import/imports-first: 2
-  import/newline-after-import: 2
-  import/no-commonjs: 2
-  import/no-dynamic-require: 2
-  import/no-extraneous-dependencies: 0
-  import/no-mutable-exports: 2
-  import/order: 2
-  import/prefer-default-export: 2
-  import/no-unresolved:
-    # - 2
-    - 0
-    - ignore:
-      - app/src/renderer
-      - src/renderer
-  # flow
-  flowtype/boolean-style: 2
-  flowtype/define-flow-type: 2
-  flowtype/delimiter-dangle:
-    - 2
-    - never
-  flowtype/generic-spacing:
-    - 2
-    - never
-  flowtype/no-dupe-keys: 2
-  flowtype/no-primitive-constructor-types: 2
-  flowtype/object-type-delimiter:
-    - 2
-    - comma
-  flowtype/require-parameter-type:
-    - 2
-    - excludeArrowFunctions: true
-  flowtype/require-return-type:
-    - 2
-    - excludeArrowFunctions: true
-  flowtype/require-valid-file-annotation:
-    - 1
-    - always
-    - annotationStyle: block
-  flowtype/space-after-type-colon: 2
-  flowtype/space-before-type-colon:
-    - 2
-    - never
-  flowtype/space-before-generic-bracket:
-    - 2
-    - never
-  flowtype/union-intersection-spacing: 2
+{
+  "root": true,
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "sourceType": "module",
+    "env": null,
+    "browser": true,
+    "node": true
+  },
+  "extends": [
+    "standard",
+    "plugin:import/errors",
+    "plugin:flowtype/recommended",
+    "prettier",
+    "prettier/flowtype",
+    "prettier/standard"
+  ],
+  "plugins": [
+    "prettier",
+    "html",
+    "flowtype",
+    "standard",
+    "import"
+  ],
+  "rules": {
+    "no-unused-vars": [
+      2,
+      {
+        "args": "all",
+        "varsIgnorePattern": "^_.+",
+        "argsIgnorePattern": "^_.+",
+        "caughtErrorsIgnorePatter": "^_"
+      }
+    ],
+    "import/imports-first": 2,
+    "import/newline-after-import": 2,
+    "import/no-commonjs": 2,
+    "import/no-dynamic-require": 2,
+    "import/no-extraneous-dependencies": 0,
+    "import/no-mutable-exports": 2,
+    "import/order": 2,
+    "import/prefer-default-export": 2,
+    "import/no-unresolved": [
+      0,
+      {
+        "ignore": [
+          "app/src/renderer",
+          "src/renderer"
+        ]
+      }
+    ],
+    "flowtype/boolean-style": 2,
+    "flowtype/define-flow-type": 2,
+    "flowtype/no-dupe-keys": 2,
+    "flowtype/no-primitive-constructor-types": 2,
+    "flowtype/require-parameter-type": [
+      2,
+      {
+        "excludeArrowFunctions": true
+      }
+    ],
+    "flowtype/require-return-type": [
+      2,
+      "always",
+      {
+        "excludeArrowFunctions": true
+      }
+    ],
+    "flowtype/require-valid-file-annotation": [
+      1,
+      "always",
+      {
+        "annotationStyle": "block"
+      }
+    ],
+    "prettier/prettier": "error"
+  }
+}
